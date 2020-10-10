@@ -20,3 +20,5 @@ for (const a of products) {
 }
 log(...under30000);
 log(...filter(({ price }) => price <= 20000, products));
+
+module.exports = { filter };

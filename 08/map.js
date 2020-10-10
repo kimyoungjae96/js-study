@@ -42,3 +42,5 @@ let m = new Map();
 m.set("a", 10);
 m.set("b", 20);
 log(new Map(map(([key, value]) => [key, value * 2], m)));
+
+module.exports = { map };
