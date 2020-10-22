@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <title>Hello</title>
+    <script type="module">
+      import about from "./component/about.js";
+      import gallery from "./component/gallery.js";
+      import home from "./component/home.js";
+      import contact from "./component/contact.js";
+      import help from "./component/help.js";
+      import yoyo from "./component/yoyo.js";
+
+      const select_tab = (id) => {
+        document
+          .querySelectorAll("section.route")
+          .forEach((item) => item.classList.remove("selected"));
+
+        document.querySelectorAll("section.route").forEach((item, index) => {
+          if (index === id) {
+            item.classList.add("selected");
+          }
+        });
+      };
+
+      const load_content = (content) => {
+        document.querySelector("#content").innerHTML = content;
+      };
+
+      const push = (id, section) => {
+        const path = section?.getAttribute("path");
+        const component = section?.getAttribute("component");
+        const title = path.split("/")[1];
+        document.title = title;
+        select_tab(id);
+        load_content(eval(component).render());
+        window.history.pushState({ id }, `${title}`, `${path}`); // state, title, url
+      };
+
+      window.onload = (event) => {
+        const sectionList = document.querySelectorAll("section.route") ?? [];
+        for (const [index, section] of sectionList.entries()) {
+          section.addEventListener("click", (event) => push(index, section));
+        }
+      };
+
+      // 뒤로가기, 앞으로 가기 체크
+      window.addEventListener("popstate", (event) => {
+        let stateId = event.state.id;
+
+        document.querySelectorAll("section.route").forEach((item, index) => {
+          if (index === stateId) {
+            select_tab(stateId);
+            load_content(eval(item.getAttribute("component")).render());
+          }
+        });
+      });
+    </script>
+    <style>
+      * {
+        /* global font */
+        font-family: Verdana;
+        font-size: 18px;
+      }
+      #root {
+        display: flex;
+        flex-direction: row;
+      }
+      #content {
+        display: flex;
+        display: block;
+        width: 800px;
+        height: 250px;
+        /* vertically centered text */
+        line-height: 250px;
+        border: 2px solid #555;
+        margin: 32px;
+        text-align: center;
+      }
+      .route {
+        cursor: pointer;
+        justify-content: center;
+        width: 150px;
+        height: 50px;
+        /* vertically centered text */
+        line-height: 50px;
+        position: relative;
+        border: 2px solid #555;
+        background: white;
+        text-align: center;
+        margin: 16px;
+      }
+      .route.selected {
+        background: yellow;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section id="root">
+      <section class="route" path="/home/hihi" component="home">/home</section>
+      <section class="route" path="/about" component="about">/about</section>
+      <section class="route" path="/gallery" component="gallery">
+        /gallery
+      </section>
+      <section class="route" path="/contact" component="contact">
+        /contact
+      </section>
+      <section class="route" path="/help" component="help">/help</section>
+      <section class="route" path="/yoyo" component="yoyo">/yoyo</section>
+    </section>
+
+    <main id="content">Content loading...</main>
+  </body>
+</html>
