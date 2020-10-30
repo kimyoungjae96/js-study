@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="./reset.css" />
+    <style>
+      .cat-list {
+        overflow: scroll;
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .cat-tile {
+        background-color: grey;
+        margin: 10px 0;
+        height: 150px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <input id="input1" placeholder="# of items in DB" />
+    <input id="input2" placeholder="# of DOM els (min 20)" />
+
+    <button id="start-btn" onclick="start()">Start Infinite Scroll</button>
+
+    <div id="container">
+      <ul class="cat-list" style="top-padding: 0px; bottom-padding: 0px"></ul>
+    </div>
+  </body>
+  <script src="./infinite_scroll.js"></script>
+</html>
