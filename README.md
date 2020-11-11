@@ -12,3 +12,5 @@
 9. 테스팅 환경 구축하기
 10. NPM 모듈 만들기
 11. React 라이브러리 분석해보기
+
+<a href="https://www.notion.so/Javascript-e1d799c7b01f461dae704d1a684c4b3b">정리</a>
