@@ -5,7 +5,8 @@ import LifeCycleSample from "./LifeCycleSample/LifeCycleSample";
 import React, { Component } from "react";
 import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 import Counter from "./Counter/Counter";
-import Info from './Info/Info'
+import Info from "./Info/Info";
+import Average from "./Average/Average";
 
 function getRandomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -33,6 +34,7 @@ class App extends Component {
           </button>
           <Counter></Counter>
           <Info />
+          <Average />
         </ErrorBoundary>
       </div>
     );
