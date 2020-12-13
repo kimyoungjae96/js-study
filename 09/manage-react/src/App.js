@@ -7,6 +7,7 @@ import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 import Counter from "./Counter/Counter";
 import Info from "./Info/Info";
 import Average from "./Average/Average";
+import SassComponent from "./SassComponent/SassComponent";
 
 function getRandomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -35,6 +36,7 @@ class App extends Component {
           <Counter></Counter>
           <Info />
           <Average />
+          <SassComponent />
         </ErrorBoundary>
       </div>
     );
