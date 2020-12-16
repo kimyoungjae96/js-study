@@ -9,6 +9,7 @@ import Info from "./Info/Info";
 import Average from "./Average/Average";
 import SassComponent from "./SassComponent/SassComponent";
 import StyledComponent from "./StyledComponents/StyledComponents";
+import TodoApp from "./TodoApp/App";
 
 function getRandomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -25,22 +26,23 @@ class App extends Component {
   };
   render() {
     return (
-      <div className="App">
-        <ErrorBoundary>
-          <EventPractice />
-          <LifeCycleSample color={this.state.color} />
-          <ScrollBox ref={(ref) => (this.scrollBox = ref)} />
-          <button onClick={this.handleClick}>랜덤 색상</button>
-          <button onClick={() => this.scrollBox.scrollToBottom()}>
-            맨 밑으로
-          </button>
-          <Counter></Counter>
-          <Info />
-          <Average />
-          <SassComponent />
-          <StyledComponent />
-        </ErrorBoundary>
-      </div>
+      <TodoApp></TodoApp>
+      // <div className="App">
+      //   <ErrorBoundary>
+      //     <EventPractice />
+      //     <LifeCycleSample color={this.state.color} />
+      //     <ScrollBox ref={(ref) => (this.scrollBox = ref)} />
+      //     <button onClick={this.handleClick}>랜덤 색상</button>
+      //     <button onClick={() => this.scrollBox.scrollToBottom()}>
+      //       맨 밑으로
+      //     </button>
+      //     <Counter></Counter>
+      //     <Info />
+      //     <Average />
+      //     <SassComponent />
+      //     <StyledComponent />
+      //   </ErrorBoundary>
+      // </div>
     );
   }
 }
