@@ -10,6 +10,11 @@ import Average from "./Average/Average";
 import SassComponent from "./SassComponent/SassComponent";
 import StyledComponent from "./StyledComponents/StyledComponents";
 import TodoApp from "./TodoApp/App";
+import { Route, Link, Switch, NavLink } from "react-router-dom";
+import About from "./ReactRouter/About";
+import Home from "./ReactRouter/Home";
+import Profiles from "./ReactRouter/Profiles";
+import HistorySample from "./ReactRouter/HistorySample";
 
 function getRandomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -26,7 +31,37 @@ class App extends Component {
   };
   render() {
     return (
-      <TodoApp></TodoApp>
+      // <TodoApp></TodoApp>
+      <div>
+        <ul>
+          <li>
+            <Link to="/">홈</Link>
+          </li>
+          <li>
+            <Link to="/about">소개</Link>
+          </li>
+          <li>
+            <Link to="/profiles"> 프로필</Link>
+          </li>
+          <li>
+            <Link to="/history"> History 예제</Link>
+          </li>
+        </ul>
+        <Switch>
+          <Route path="/" exact={true} component={Home} />
+          <Route path={["/about", "/info"]} component={About} />
+          <Route path="/profiles" component={Profiles} />
+          <Route path="/history" component={HistorySample} />
+          <Route
+            render={({ location }) => (
+              <div>
+                <h2>이 페이지는 존재하지 않습니다:</h2>
+                <p>{location.pathname}</p>
+              </div>
+            )}
+          />
+        </Switch>
+      </div>
       // <div className="App">
       //   <ErrorBoundary>
       //     <EventPractice />
