@@ -4,17 +4,27 @@ import NewsPage from "./NewsApi/NewsPage";
 import ColorBox from "./ContextTutorial/components/ColorBox";
 import ColorContext, { ColorProvider } from "./ContextTutorial/contexts/color";
 import SelectColors from "./ContextTutorial/components/SelectColors";
+import Counter from "./redux/components/Counter";
+import CounterContainer from "./redux-middleware/containers/CounterContainer";
+import Todos from "./redux/components/Todos";
+import TodosContainer from "./redux/containers/TodosContainer";
+import SampleContainer from "./redux-middleware/containers/SampleContainer";
 
 const App = () => {
-  return (
-    <ColorProvider>
-      <div>
-        <SelectColors />
-        <ColorBox />
-      </div>
-    </ColorProvider>
-  );
+  // return (
+  //   <ColorProvider>
+  //     <div>
+  //       <SelectColors />
+  //       <ColorBox />
+  //     </div>
+  //   </ColorProvider>
+  // );
   // return <Route path={"/:category?"} component={NewsPage} />;
+  return (
+    <div>
+      <SampleContainer />
+    </div>
+  );
 };
 
 export default App;
