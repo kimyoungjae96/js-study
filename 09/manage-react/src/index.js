@@ -4,16 +4,24 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import rootReducer from "./redux-middleware/modules";
+import rootReducer from "./redux-saga/modules";
 import { applyMiddleware, createStore } from "redux";
 import { Provider } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import loggerMiddleware from "./redux-middleware/lib/loggerMiddleware";
 import { createLogger } from "redux-logger/src";
 import ReduxThunk from "redux-thunk";
+import createSagaMiddleware from "redux-saga";
+import { rootSaga } from "./redux-saga/modules";
 const logger = createLogger();
+const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(rootReducer, applyMiddleware(logger, ReduxThunk));
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
+);
+sagaMiddleware.run(rootSaga);
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
