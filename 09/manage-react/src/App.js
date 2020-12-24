@@ -9,21 +9,17 @@ import CounterContainer from "./redux-saga/containers/CounterContainer";
 import Todos from "./redux/components/Todos";
 import TodosContainer from "./redux/containers/TodosContainer";
 import SampleContainer from "./redux-saga/containers/SampleContainer";
+import Menu from './ssr-recipe/components/Menu'
+import RedPage from './ssr-recipe/pages/RedPage'
+import BluePage from './ssr-recipe/pages/BluePage'
 
 const App = () => {
-  // return (
-  //   <ColorProvider>
-  //     <div>
-  //       <SelectColors />
-  //       <ColorBox />
-  //     </div>
-  //   </ColorProvider>
-  // );
-  // return <Route path={"/:category?"} component={NewsPage} />;
   return (
     <div>
-      <CounterContainer />
-      <SampleContainer />
+      <Menu />
+      <hr />
+      <Route path="/red" component={RedPage} />
+      <Route path="/blue" component={BluePage} />
     </div>
   );
 };

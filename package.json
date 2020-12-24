@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/kimyoungjae96/js-study#readme",
   "dependencies": {
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "serve": "^11.3.2"
   }
 }
