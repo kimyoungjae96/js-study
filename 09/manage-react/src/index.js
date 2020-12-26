@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import rootReducer, { rootSaga } from "./ssr-recipe/modules";
 import createSagaMiddleware from "redux-saga";
+import { loadableReady } from "@loadable/component";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -20,18 +21,25 @@ const store = createStore(
 
 sagaMiddleware.run(rootSaga);
 
-ReactDOM.render(
-  <React.StrictMode>
+const Root = () => {
+  return (
     <Provider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>
-    ,
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+  );
+};
 
+const root = document.getElementById("root");
+
+if (process.env.NODE_ENV === "production") {
+  loadableReady(() => {
+    ReactDOM.hydrate(<Root />, root);
+  });
+} else {
+  ReactDOM.render(<Root />, root);
+}
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
