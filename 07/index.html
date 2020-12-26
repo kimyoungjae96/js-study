@@ -1,0 +1,181 @@
+<html>
+  <head>
+    <script>
+      const { log, clear } = console;
+    </script>
+  </head>
+  <body>
+    #이미지 가져오기
+    <script>
+      const imgs = [
+        {
+          name: "400x200",
+          url: "http://placehold.it/400x200/efa/aae&text=placehold.it",
+        },
+        {
+          name: "500x300",
+          url: "http://placehold.it/500x300/efa/aae&text=placehold.it",
+        },
+        {
+          name: "500x400",
+          url: "http://placehold.it/500x400/efa/aae&text=placehold.it",
+        },
+        {
+          name: "600x400",
+          url: "http://placehold.it/600x400/efa/aae&text=placehold.it",
+        },
+        {
+          name: "800x200",
+          url: "http://placehold.it/800x200/efa/aae&text=placehold.it",
+        },
+      ];
+
+      const imgs2 = [
+        {
+          name: "400x200",
+          url: "http://placehold.it/400x200/efa/aae&text=placehold.it",
+        },
+        {
+          name: "500x300",
+          url: "http://placehold.t/500x300/efa/aae&text=placehold.it",
+        },
+        {
+          name: "500x400",
+          url: "http://placehold.it/500x400/efa/aae&text=placehold.it",
+        },
+        {
+          name: "600x400",
+          url: "http://placehold.it/600x400/efa/aae&text=placehold.it",
+        },
+        {
+          name: "800x200",
+          url: "http://placehold.it/800x200/efa/aae&text=placehold.it",
+        },
+      ];
+
+      const loadImage = (url) =>
+        new Promise((resolve, reject) => {
+          let img = new Image();
+          img.src = url;
+          img.onload = () => {
+            resolve(img);
+          };
+          img.onerror = (e) => {
+            reject(e);
+          };
+          console.log("img", img);
+          return img;
+        });
+    </script>
+
+    # 목표 - 이미지들을 불러와서 모든 이미지의 높이를 더한다.
+    <script>
+      // 원인 분석해 볼 것
+      // loadImage(imgs[0].url).then(img => log(img))
+      // imgs
+      //   .map(async ({url})=> {
+      //     const a = await loadImage(url)
+      //     console.log(a.height)
+      //     return a.height
+      //   })
+      //   .map(image => log('1',image))
+      //   .forEach((a) => log(a))
+
+      // 되기는 됐지만 이 코드는 아슬아슬하게 된 코드
+      // async function f1 ()
+      //     {
+      //       const totalHeight = await imgs
+      //         .map(async ({url}) => {
+      //           const img = await loadImage(url)
+      //           return img.height
+      //         })
+      //         .reduce(async (total, height) => await total + await height, 0)
+      //       log(totalHeight)
+      //     }
+      // f1()
+
+      // 이미지의 경로가 틀린경우
+      // 해당 코드의 문제점 에러가 두번째 이미지에서 발생했지만, loadImage는 5번이 호출되는 현상
+      async function f1() {
+        try {
+          const totalHeight = await imgs2
+            .map(async ({ url }) => {
+              try {
+                const img = await loadImage(url);
+                return img.height;
+              } catch (e) {
+                throw Error("에러");
+              }
+            })
+            .reduce(async (total, height) => (await total) + (await height), 0);
+        } catch (e) {
+          log(0);
+        }
+      }
+      //f1()
+
+      //다음 함수를 통해 에러를 해결..! 에러가 발생한 경우 호출하지 않는다.
+      //하지만 이 코드도 그렇게 좋은 코드가 아니다.
+      async function reduceAsync(f, acc, iter) {
+        for await (const a of iter) {
+          acc = f(acc, a);
+        }
+        return acc;
+      }
+      function* map(f, iter) {
+        for (const a of iter) {
+          yield a instanceof Promise ? a.then(f) : f(a);
+        }
+      }
+
+      async function f2() {
+        // 함수 안에서 부수효과를 일으키는 함수는 그렇게 좋은 함수가 아니다.
+        // for await (const a of map(
+        //   (img) => img.height,
+        //   map(({ url }) => loadImage(url), imgs)
+        // )) {
+        //   log("hihi", a);
+        // }
+        try {
+          log(
+            await reduceAsync(
+              (a, b) => a + b,
+              0,
+              map(
+                (img) => img.height,
+                map(({ url }) => loadImage(url), imgs2)
+              )
+            )
+          );
+        } catch (e) {
+          log("서버에 에러 전달", e);
+        }
+      }
+
+      //f2();
+      // 에러 핸들링을 하지 않는 것이 가장 좋은 코드이다. 여기서 핸들링을 할 것이 아니라 에러를 터트려주고 호출하는 쪽에서 핸들링을 해야한다.
+      const f3 = (imgs) => {
+        return reduceAsync(
+          (a, b) => a + b,
+          0,
+          map(
+            (img) => img.height,
+            map(({ url }) => loadImage(url), imgs)
+          )
+        );
+      }
+
+      f3(imgs).catch(_=>log(0)).then(log);
+      f3(imgs2).catch(_=>log(0)).then(log);
+      /*
+       - Promise, async/await, try/catch 를 정확히 다루는 것이 중요하다.
+       - 제너레이터/이터레이터/이터러블을 잘 응용하 코드의 표현력을 더할 뿐만 아니라 에러 핸들링도 더 잘할 수 있다.
+       - 순수 함수에서는 에러가 발생되도록 그냥 두는 것이 좋다.
+       - 에러 핸들링 코드는 부수효과를 일으킬 코드 주변에서 작성하는 것이 좋다.
+       - 불필요하게 에러 핸들링을 미리 해두는 것은 에러를 숨길 뿐이다.
+       - 차라리 에러를 발생시키는 것이 낫다.
+         sentry.io 같은 서비스를 이용하 발생되는 모든 에러를 볼 수 있도록 하는 것이 좋다.
+       */
+    </script>
+  </body>
+</html>
