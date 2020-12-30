@@ -3,15 +3,18 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "start": "node src",
     "start:dev": "nodemon --watch src/ src/index.js"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "eslint-config-prettier": "^7.1.0",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
-    "koa-router": "^10.0.0"
+    "koa-router": "^10.0.0",
+    "mongoose": "^5.11.8"
   },
   "devDependencies": {
     "eslint": "^7.16.0",
