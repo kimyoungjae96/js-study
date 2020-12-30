@@ -4,6 +4,7 @@ import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import api from './api/index.js';
+import createFakeData from './createFakeData.js';
 
 dotenv.config();
 const { PORT, MONGO_URI } = process.env;
@@ -16,6 +17,7 @@ mongoose
   })
   .then(() => {
     console.log('Connected to MongoDb');
+    // createFakeData();
   })
   .catch((e) => {
     console.error(e);
