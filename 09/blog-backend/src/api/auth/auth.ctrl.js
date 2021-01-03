@@ -15,6 +15,12 @@ export const register = async (ctx) => {
 
   const { username, password } = ctx.request.body;
   try {
+    const exists = await User.findByUsername(username);
+    if (exists) {
+      ctx.status = 409;
+      return;
+    }
+
     const user = new User({
       username,
     });
